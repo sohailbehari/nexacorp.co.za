@@ -1,1 +1,519 @@
 nexacorp.co.za
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Field & Ledger — One Page Studio Site</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #171b19;
+    --surface: #1f2521;
+    --surface-2: #242b26;
+    --ink: #ece7dc;
+    --ink-dim: #a8ada2;
+    --brass: #c9a227;
+    --sage: #7fa084;
+    --line: rgba(236,231,220,0.14);
+    --radius: 2px;
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  ::selection{ background:var(--brass); color:#171b19; }
+
+  a{ color:inherit; text-decoration:none; }
+
+  .wrap{
+    max-width:1100px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* Focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--brass);
+    outline-offset:3px;
+  }
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:50;
+    background:rgba(23,27,25,0.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 32px;
+    max-width:1100px;
+    margin:0 auto;
+  }
+  .brand{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .dot{
+    width:7px; height:7px; border-radius:50%;
+    background:var(--brass);
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+  .nav-links a{ transition:color .2s ease; position:relative; }
+  .nav-links a:hover{ color:var(--ink); }
+  @media (max-width:640px){ .nav-links{ display:none; } }
+
+  /* ---------- Hero (the signature: a ledger stamp) ---------- */
+  .hero{
+    padding:120px 0 100px;
+    position:relative;
+    overflow:hidden;
+    border-bottom:1px solid var(--line);
+  }
+  .hero .wrap{ position:relative; }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--sage);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:28px;
+    opacity:0;
+    animation: rise .7s ease forwards;
+  }
+  .eyebrow::before{
+    content:'';
+    width:24px; height:1px;
+    background:var(--sage);
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-optical-sizing:auto;
+    font-weight:500;
+    font-size:clamp(2.6rem, 6vw, 4.6rem);
+    line-height:1.04;
+    letter-spacing:-0.01em;
+    max-width:16ch;
+    opacity:0;
+    animation: rise .8s ease .1s forwards;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:300;
+    color:var(--brass);
+  }
+  .lede{
+    margin-top:28px;
+    max-width:52ch;
+    font-size:1.08rem;
+    color:var(--ink-dim);
+    opacity:0;
+    animation: rise .8s ease .22s forwards;
+  }
+  .hero-actions{
+    margin-top:44px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    flex-wrap:wrap;
+    opacity:0;
+    animation: rise .8s ease .32s forwards;
+  }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.06em;
+    padding:14px 26px;
+    border-radius:var(--radius);
+    border:1px solid var(--brass);
+    background:var(--brass);
+    color:#171b19;
+    font-weight:500;
+    cursor:pointer;
+    transition:transform .18s ease, background .18s ease;
+    display:inline-block;
+  }
+  .btn:hover{ transform:translateY(-2px); background:#ddb531; }
+  .btn.ghost{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--line);
+  }
+  .btn.ghost:hover{ border-color:var(--ink-dim); background:var(--surface); }
+
+  /* Stamp: signature element, rotated ledger seal */
+  .stamp{
+    position:absolute;
+    right:8px;
+    top:60px;
+    width:132px;
+    height:132px;
+    border:1px solid var(--line);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(8deg);
+    opacity:0;
+    animation: rise .9s ease .4s forwards, spin 40s linear infinite;
+  }
+  .stamp svg{ width:100%; height:100%; }
+  .stamp text{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:8.4px;
+    letter-spacing:2.5px;
+    fill:var(--ink-dim);
+    text-transform:uppercase;
+  }
+  .stamp circle{ fill:none; stroke:var(--line); }
+  .stamp .core{ fill:var(--sage); opacity:0.9; }
+  @media (max-width:800px){ .stamp{ display:none; } }
+
+  @keyframes rise{
+    from{ opacity:0; transform:translateY(14px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+  @keyframes spin{
+    from{ transform:rotate(8deg); }
+    to{ transform:rotate(368deg); }
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; }
+    html{ scroll-behavior:auto; }
+  }
+
+  /* ---------- Section scaffolding ---------- */
+  section{ padding:96px 0; border-bottom:1px solid var(--line); }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:24px;
+    margin-bottom:56px;
+    flex-wrap:wrap;
+  }
+  .section-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--brass);
+  }
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(1.8rem, 3.4vw, 2.6rem);
+    margin-top:10px;
+  }
+  .section-note{
+    max-width:34ch;
+    color:var(--ink-dim);
+    font-size:0.95rem;
+  }
+
+  /* ---------- About ---------- */
+  .about-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:64px;
+  }
+  @media (max-width:760px){ .about-grid{ grid-template-columns:1fr; gap:32px; } }
+  .about-grid p{ color:var(--ink-dim); margin-bottom:18px; max-width:48ch; }
+  .about-grid p:last-child{ margin-bottom:0; }
+  .stat-list{ display:flex; flex-direction:column; gap:24px; }
+  .stat{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    border-bottom:1px solid var(--line);
+    padding-bottom:20px;
+  }
+  .stat-num{
+    font-family:'Fraunces', serif;
+    font-size:2.2rem;
+    color:var(--brass);
+  }
+  .stat-label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--ink-dim);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    max-width:18ch;
+    text-align:right;
+  }
+
+  /* ---------- Work ---------- */
+  .work-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  @media (max-width:860px){ .work-grid{ grid-template-columns:1fr; } }
+  .work-card{
+    background:var(--surface);
+    padding:36px 30px;
+    transition:background .2s ease;
+  }
+  .work-card:hover{ background:var(--surface-2); }
+  .work-mark{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--sage);
+    letter-spacing:0.08em;
+  }
+  .work-card h3{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:1.4rem;
+    margin:16px 0 12px;
+  }
+  .work-card p{ color:var(--ink-dim); font-size:0.94rem; }
+
+  /* ---------- Contact ---------- */
+  .contact{ border-bottom:none; }
+  .contact-inner{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .contact h2{ max-width:14ch; }
+  form{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+    width:100%;
+    max-width:420px;
+  }
+  label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-dim);
+    margin-bottom:6px;
+    display:block;
+  }
+  input, textarea{
+    width:100%;
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:0.95rem;
+  }
+  input:focus, textarea:focus{
+    outline:none;
+    border-color:var(--brass);
+  }
+  textarea{ resize:vertical; min-height:90px; }
+  .form-status{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:var(--sage);
+    min-height:16px;
+  }
+
+  footer{
+    padding:32px 0;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-dim);
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand"><span class="dot"></span> Field &amp; Ledger</div>
+    <nav class="nav-links">
+      <a href="#about">About</a>
+      <a href="#work">Work</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Est. 2026 — Single page, no fuss</div>
+    <h1>Say one thing well, <em>and say it once.</em></h1>
+    <p class="lede">This is a starting template — swap this headline, the section copy, and the three work cards below for your own. Everything here is plain HTML, CSS, and a few lines of JS, so it's easy to edit by hand.</p>
+    <div class="hero-actions">
+      <a href="#work" class="btn">See the work</a>
+      <a href="#contact" class="btn ghost">Get in touch</a>
+    </div>
+
+    <div class="stamp" aria-hidden="true">
+      <svg viewBox="0 0 132 132">
+        <circle cx="66" cy="66" r="63"></circle>
+        <circle cx="66" cy="66" r="3" class="core"></circle>
+        <path id="stampCircle" d="M 66,14 A 52,52 0 1 1 65.9,14" fill="none"></path>
+        <text><textPath href="#stampCircle">Field &amp; Ledger · Studio Mark ·</textPath></text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about-grid">
+    <div>
+      <div class="section-label">About</div>
+      <h2>A short, honest bio goes here.</h2>
+      <p>Two or three sentences about who this is for and what you actually do — written the way you'd say it out loud, not the way a brochure would. Replace this paragraph with your real story.</p>
+      <p>Add a second paragraph if you need it: how you work, what you care about, or what makes the work distinct. Keep it plain — specific beats clever.</p>
+    </div>
+    <div class="stat-list">
+      <div class="stat"><span class="stat-num">08</span><span class="stat-label">Years doing this</span></div>
+      <div class="stat"><span class="stat-num">42</span><span class="stat-label">Projects shipped</span></div>
+      <div class="stat"><span class="stat-num">03</span><span class="stat-label">Things I'm best at</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="wrap">
+    <div class="section-head">
+      <div>
+        <div class="section-label">Work</div>
+        <h2>A few things worth showing.</h2>
+      </div>
+      <p class="section-note">Replace these three cards with real projects, case studies, or products — each one a link if you have somewhere for it to go.</p>
+    </div>
+    <div class="work-grid">
+      <div class="work-card">
+        <div class="work-mark">01</div>
+        <h3>Project name</h3>
+        <p>One or two lines on what it was, who it was for, and the result. Keep it concrete.</p>
+      </div>
+      <div class="work-card">
+        <div class="work-mark">02</div>
+        <h3>Project name</h3>
+        <p>One or two lines on what it was, who it was for, and the result. Keep it concrete.</p>
+      </div>
+      <div class="work-card">
+        <div class="work-mark">03</div>
+        <h3>Project name</h3>
+        <p>One or two lines on what it was, who it was for, and the result. Keep it concrete.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap contact-inner">
+    <div>
+      <div class="section-label">Contact</div>
+      <h2>Let's talk.</h2>
+    </div>
+    <form id="contactForm">
+      <div>
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" required>
+      </div>
+      <div>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+      </div>
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="btn">Send message</button>
+      <div class="form-status" id="formStatus" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap" style="display:flex; justify-content:space-between; width:100%; flex-wrap:wrap; gap:8px;">
+    <span>© 2026 Field &amp; Ledger</span>
+    <span>Built with HTML, CSS &amp; JS</span>
+  </div>
+</footer>
+
+<script>
+  // Simple form handling placeholder — wire this up to your own backend,
+  // form service (e.g. Formspree), or email link as needed.
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    if (!data.name || !data.email || !data.message) {
+      status.textContent = 'Please fill in every field.';
+      return;
+    }
+
+    // Placeholder success state — replace with a real submit (fetch to your endpoint).
+    status.textContent = 'Thanks, ' + data.name.split(' ')[0] + ' — message noted.';
+    form.reset();
+  });
+
+  // Smooth-scroll active nav highlight (subtle, no external libs)
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.style.color = link.getAttribute('href') === '#' + entry.target.id
+            ? 'var(--ink)'
+            : '';
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+
+  sections.forEach(sec => observer.observe(sec));
+</script>
+
+</body>
+</html>
